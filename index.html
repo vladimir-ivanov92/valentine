@@ -108,7 +108,7 @@
       overflow: hidden;
     }
 
-    .front { }
+    .front { position: relative; }
 
     .back {
       transform: rotateY(180deg);
@@ -287,11 +287,16 @@
     // Make the "No" button playfully dodge the cursor/taps
     const dodge = () => {
       if (card.classList.contains('flipped')) return;
-      const card = document.querySelector('.card');
-      const rect = card.getBoundingClientRect();
 
-      const x = (Math.random() * (rect.width - 120)) + 30;
-      const y = (Math.random() * (rect.height - 140)) + 70;
+      // Keep the "No" button moving within the front face
+      frontFace.style.position = 'relative';
+
+      const padding = 18;
+      const maxX = Math.max(padding, frontFace.clientWidth - noBtn.offsetWidth - padding);
+      const maxY = Math.max(padding, frontFace.clientHeight - noBtn.offsetHeight - padding);
+
+      const x = padding + Math.random() * (maxX - padding);
+      const y = 120 + Math.random() * Math.max(0, (maxY - 120));
 
       noBtn.style.position = 'absolute';
       noBtn.style.left = x + 'px';
