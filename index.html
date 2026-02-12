@@ -108,7 +108,7 @@
       overflow: hidden;
     }
 
-    .front { position: relative; }
+    .front { }
 
     .back {
       transform: rotateY(180deg);
@@ -249,11 +249,12 @@
   <script>
     // Create floating hearts
     const heartsWrap = document.getElementById('hearts');
-    const HEARTS = 22;
+    const HEARTS = 14;
 
     for (let i = 0; i < HEARTS; i++) {
       const h = document.createElement('div');
       h.className = 'heart';
+      h.style.willChange = 'transform, opacity';
       const left = Math.random() * 100;
       const size = 12 + Math.random() * 20;
       const duration = 6 + Math.random() * 10;
@@ -272,6 +273,7 @@
 
     // Button interactions
     const card = document.getElementById('card');
+    const frontFace = document.querySelector('.front');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn  = document.getElementById('noBtn');
     const message = document.getElementById('message');
