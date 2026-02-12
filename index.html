@@ -278,6 +278,14 @@
     const noBtn  = document.getElementById('noBtn');
     const message = document.getElementById('message');
 
+    let noAttempts = 0;
+    const funnyMessages = [
+      "404: No not found 😌",
+      "Nice try.",
+      "That seems incorrect.",
+      "Access denied 💻",
+      "The pancakes wi
+
     yesBtn.addEventListener('click', () => {
       card.classList.add('flipped');
       message.classList.remove('show');
