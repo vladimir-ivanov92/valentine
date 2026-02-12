@@ -196,7 +196,10 @@
     const message = document.getElementById('message');
 
     yesBtn.addEventListener('click', () => {
-      message.textContent = 'YAY! 💖 I’m so happy!';
+      message.innerHTML = `
+        <strong>YAY! 💖</strong><br/>
+        Brunch. <strong>12:00 pm</strong>. Saturday at <strong>Beyond Brkfst</strong> :*
+      `;
       message.classList.add('show');
       confettiBurst();
     });
