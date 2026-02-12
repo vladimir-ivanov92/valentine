@@ -70,6 +70,48 @@
       padding: 0;
       border-radius: 24px;
       background: transparent;
+      border: 0;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      position: relative;
+      perspective: 1200px;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      min-height: 320px;
+      border-radius: 24px;
+      transform-style: preserve-3d;
+      transition: transform 800ms cubic-bezier(.2,.9,.2,1);
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      padding: 28px 26px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,0.7);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.12);
+      backdrop-filter: blur(10px);
+      backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    .front { position: relative; }
+
+    .back {
+      transform: rotateY(180deg);
+      display: grid;
+      place-items: center;
+      gap: 10px;
+    }
 
     h1 {
       margin: 0 0 10px;
@@ -136,28 +178,37 @@
     .sparkle {
       position: absolute;
       inset: -40px;
-      background: radial-gradient(circle at 20% 30%, rgba(255, 77, 109, 0.14), transparent 40%),
-                  radial-gradient(circle at 80% 10%, rgba(123, 44, 191, 0.12), transparent 45%),
-                  radial-gradient(circle at 70% 85%, rgba(255, 143, 171, 0.14), transparent 45%);
-      z-index: -1;
-    }
-  </style>
+      background: radial-gradient(circle at 20% 30%, rgba(255, 77,  </style>
 </head>
 <body>
   <div class="hearts" aria-hidden="true" id="hearts"></div>
 
-  <main class="card" role="main">
-    <div class="sparkle" aria-hidden="true"></div>
-    <h1>Radi, will you be my Valentine?</h1>
-    <p>Tap a button. (No pressure… but the hearts are cheering.)</p>
+  <main class="card" role="main" id="card">
+    <div class="card-inner" id="cardInner">
+      <!-- Front -->
+      <section class="card-face front" aria-label="Valentine question">
+        <div class="sparkle" aria-hidden="true"></div>
+        <h1>Radi, will you be my Valentine?</h1>
+        <p>Tap a button. (No pressure… but the hearts are cheering.)</p>
 
-    <div class="buttons">
-      <button class="yes" id="yesBtn">Yes 💘</button>
-      <button class="no" id="noBtn">No 🙈</button>
+        <div class="buttons">
+          <button class="yes" id="yesBtn">Yes 💘</button>
+          <button class="no" id="noBtn">No 🙈</button>
+        </div>
+
+        <div class="message" id="message" aria-live="polite"></div>
+        <div class="tiny">Made with ❤️</div>
+      </section>
+
+      <!-- Back -->
+      <section class="card-face back" aria-label="Valentine details">
+        <div>
+          <h1 style="margin-bottom: 6px;">YAY! 💖</h1>
+          <p style="margin-bottom: 14px;">Brunch. <strong>12:00 pm</strong>. Saturday at <strong>Beyond Brkfst</strong> :*</p>
+          <p style="margin: 0; opacity: 0.8;">(See you there 😌)</p>
+        </div>
+      </section>
     </div>
-
-    <div class="message" id="message" aria-live="polite"></div>
-    <div class="tiny">Made with ❤️</div>
   </main>
 
   <script>
@@ -185,21 +236,20 @@
     }
 
     // Button interactions
+    const card = document.getElementById('card');
     const yesBtn = document.getElementById('yesBtn');
     const noBtn  = document.getElementById('noBtn');
     const message = document.getElementById('message');
 
     yesBtn.addEventListener('click', () => {
-      message.innerHTML = `
-        <strong>YAY! 💖</strong><br/>
-        Brunch. <strong>12:00 pm</strong>. Saturday at <strong>Beyond Brkfst</strong> :*
-      `;
-      message.classList.add('show');
+      card.classList.add('flipped');
+      message.classList.remove('show');
       confettiBurst();
     });
 
     // Make the "No" button playfully dodge the cursor/taps
     const dodge = () => {
+      if (card.classList.contains('flipped')) return;
       const card = document.querySelector('.card');
       const rect = card.getBoundingClientRect();
 
