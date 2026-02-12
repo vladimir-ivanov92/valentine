@@ -284,7 +284,13 @@
       "Nice try.",
       "That seems incorrect.",
       "Access denied 💻",
-      "The pancakes wi
+      "The pancakes will be sad 🥞",
+      "Radiii… 🥺",
+      "Bold move.",
+      "You almost had it!",
+      "Permission revoked.",
+      "Hmm… try again."
+    ];
 
     yesBtn.addEventListener('click', () => {
       card.classList.add('flipped');
@@ -296,7 +302,18 @@
     const dodge = () => {
       if (card.classList.contains('flipped')) return;
 
-      // Keep the "No" button moving within the front face
+      noAttempts++;
+
+      // After 5 attempts, final dramatic message
+      if (noAttempts >= 5) {
+        message.textContent = "Okay fine, you win. Just kidding. You don’t.";
+        message.classList.add('show');
+      } else {
+        const randomIndex = Math.floor(Math.random() * funnyMessages.length);
+        message.textContent = funnyMessages[randomIndex];
+        message.classList.add('show');
+      }
+
       frontFace.style.position = 'relative';
 
       const padding = 18;
@@ -309,12 +326,11 @@
       noBtn.style.position = 'absolute';
       noBtn.style.left = x + 'px';
       noBtn.style.top = y + 'px';
-
-      message.textContent = 'Are you suuure? 😅';
-      message.classList.add('show');
     };
 
+    // Desktop + mobile friendly events
     noBtn.addEventListener('mouseenter', dodge);
+    noBtn.addEventListener('pointerenter', dodge);
     noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodge(); }, { passive: false });
     noBtn.addEventListener('click', dodge);
 
